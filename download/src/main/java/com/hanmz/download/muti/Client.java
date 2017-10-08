@@ -23,18 +23,18 @@ public class Client implements Runnable {
   private boolean finish;
   private String filename;
 
+  public Client(String url, String localPath, int threadSize) {
+    this.url = url;
+    this.localPath = localPath;
+    this.threadSize = threadSize;
+  }
+
   public long getProgress() {
     return progress;
   }
 
   public boolean isFinish() {
     return finish;
-  }
-
-  public Client(String url, String localPath, int threadSize) {
-    this.url = url;
-    this.localPath = localPath;
-    this.threadSize = threadSize;
   }
 
   public void run() {

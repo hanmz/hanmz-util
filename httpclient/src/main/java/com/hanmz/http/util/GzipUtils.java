@@ -13,12 +13,23 @@ import java.util.zip.GZIPInputStream;
  */
 @Slf4j
 public class GzipUtils {
-  public static byte[] uncompress(byte[] bytes,int offset,int length) {
+  private GzipUtils() {
+  }
+
+  /**
+   * 解压gzip压缩文件
+   *
+   * @param bytes
+   * @param offset
+   * @param length
+   * @return
+   */
+  public static byte[] uncompress(byte[] bytes, int offset, int length) {
     if (bytes == null || bytes.length == 0) {
       return new byte[0];
     }
     ByteArrayOutputStream out = new ByteArrayOutputStream();
-    ByteArrayInputStream in = new ByteArrayInputStream(bytes,offset,length);
+    ByteArrayInputStream in = new ByteArrayInputStream(bytes, offset, length);
     try {
       GZIPInputStream ungzip = new GZIPInputStream(in);
       byte[] buffer = new byte[256];

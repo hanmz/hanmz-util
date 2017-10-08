@@ -27,6 +27,8 @@ import java.util.Map;
  */
 @Slf4j
 public class HttpClient {
+  private Map<String, Socket> map = Maps.newConcurrentMap();
+
   public void get(HttpRequest request, HttpBuffer buffer) {
     try {
       buffer.init();
@@ -81,8 +83,6 @@ public class HttpClient {
 
     return InnerUtils.isNullOrEmpty(inetSocketAddresses) ? null : inetSocketAddresses.get(0);
   }
-
-  private Map<String, Socket> map = Maps.newConcurrentMap();
 
   private Socket getSocket(Proxy proxy, InetSocketAddress address) {
     return map.compute(address.getHostName(), (k, v) -> {

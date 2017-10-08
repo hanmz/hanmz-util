@@ -87,13 +87,13 @@ public class HttpBuffer {
     curSize = 0;
   }
 
-  public void refill(int length) {
+  void refill(int length) {
     while (curSize < length) {
       fill();
     }
   }
 
-  public void init() {
+  void init() {
     buffer = new byte[size];
     curSize = 0;
     pos = 0;
@@ -102,7 +102,7 @@ public class HttpBuffer {
   /**
    * 获取指点范围内容
    */
-  public String getString(int i) {
+  String getString(int i) {
     String result = new String(buffer, pos, i - pos, UTF_8).trim();
     pos = i + 1;
     return result;
@@ -111,9 +111,13 @@ public class HttpBuffer {
   /**
    * 获取块内容
    */
-  public String getTrunkedString(int length) {
-    pos += length;
-    return new String(GzipUtils.uncompress(buffer, pos, length), UTF_8);
+  String getTrunkedString(int length) {
+    String res = new String(GzipUtils.uncompress(buffer, pos, length), UTF_8);
+    // 加2是因为后面还有\n\r
+    pos += (length + 2);
+    //    pos += length;
+    return res;
+
   }
 
 }

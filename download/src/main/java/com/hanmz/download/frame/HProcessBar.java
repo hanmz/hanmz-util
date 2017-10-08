@@ -16,11 +16,6 @@ class HProcessBar extends JFrame {
 
   private JProgressBar processBar;
 
-  public static void main(String[] args) {
-    HProcessBar bar = new HProcessBar(new Client("", "", 1));
-    bar.setVisible(true);
-  }
-
   HProcessBar(Client client) {
     setTitle("进度");      //设置窗体标题
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE); // 设置窗体退出的操作
@@ -45,6 +40,11 @@ class HProcessBar extends JFrame {
     }).start(); //  启动进度条线程
 
     contentPane.add(processBar);// 向面板添加进度控件
+  }
+
+  public static void main(String[] args) {
+    HProcessBar bar = new HProcessBar(new Client("", "", 1));
+    bar.setVisible(true);
   }
 
 }

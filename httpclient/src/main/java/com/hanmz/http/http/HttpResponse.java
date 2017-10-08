@@ -14,5 +14,4 @@ public class HttpResponse {
   private String bodyString;
 
 
-
 }

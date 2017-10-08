@@ -18,15 +18,13 @@ import java.util.concurrent.Executors;
  */
 @Slf4j
 public class HFileChooser implements ActionListener {
+  private static final ExecutorService downloadService = Executors.newCachedThreadPool();
   private JFrame frame = new JFrame("并行下载器");
   private JPanel jp = new JPanel();
-
   private Container con = new Container();//布局1
-
   private JLabel threadSizeLabel = new JLabel("并发数：");
   private JLabel urlLabel = new JLabel("url：");
   private JLabel pathUrl = new JLabel("存储位置：");
-
   private JTextField threadSizeText = new JTextField("32");
   private JTextField urlText = new JTextField();
   private JTextField pathText = new JTextField("D:\\tmp");
@@ -112,6 +110,4 @@ public class HFileChooser implements ActionListener {
       }
     }
   }
-
-  private static final ExecutorService downloadService = Executors.newCachedThreadPool();
 }

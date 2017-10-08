@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Multimap;
 import com.hanmz.http.exception.HttpException;
 import com.hanmz.http.util.InnerUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import static com.hanmz.http.util.Utils.UTF_8;
@@ -12,6 +13,7 @@ import static com.hanmz.http.util.Utils.UTF_8;
  * *
  * Created by hanmz on 2017/10/7.
  */
+@Slf4j
 public class HttpBody {
   private HttpBuffer buffer;
 
@@ -22,6 +24,7 @@ public class HttpBody {
 
   public String getBody(Multimap<String, String> headers) {
     if (!InnerUtils.isNullOrEmpty(headers.get("Content-Length"))) {
+      log.info("content-length : {}", headers.get("Content-Length").toArray()[0].toString());
       int length = NumberUtils.toInt(headers.get("Content-Length").toArray()[0].toString());
       return getBody(length);
     }

@@ -55,7 +55,6 @@ public class App {
     out.println(printfMap(headers));
 
     HttpBody body = new HttpBody(buffer);
-    //    out.println(headers.get("Content-Length").toArray()[0].toString());
     String bodyString = body.getBody(headers);
     response.setBodyString(bodyString);
     out.println(bodyString);

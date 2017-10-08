@@ -46,17 +46,17 @@ public class Test {
 
   private Response get(String url) throws Exception {
     Request request = new Request.Builder()
-//      .header("Upgrade-Insecure-Requests", "1")
-                                           //                                           .header("Pragma", "no-cache")
-                                           //                                           .header("Proxy-Connection", "keep-alive")
-                                           //                                           .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
-                                           //                                           .header("Accept-Encoding", "gzip, deflate")
-                                           //                                           .header("Accept-Language", "zh-CN,zh;q=0.8")
-                                           //                                           .header("Cache-Control", "no-cache")
-                                           .header("User-Agent", "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
-                                           //                                           .header("Host", "ip.taobao.com")
-                                           //                                           .header("Cookie", "miid=2108967369803816324; cookie2=180762aeb713ee352d197de7b69702b6; _tb_token_=cc6e0909d939b; t=25a63fd4cfc7aced14fa7ef63068f156; v=0")
-                                           .url(url).build();
+      //      .header("Upgrade-Insecure-Requests", "1")
+      //                                           .header("Pragma", "no-cache")
+      //                                           .header("Proxy-Connection", "keep-alive")
+      //                                           .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+      //                                           .header("Accept-Encoding", "gzip, deflate")
+      .header("Accept-Language", "zh-CN,zh;q=0.8")
+      //                                           .header("Cache-Control", "no-cache")
+      .header("User-Agent", "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
+      //                                           .header("Host", "ip.taobao.com")
+      //                                           .header("Cookie", "miid=2108967369803816324; cookie2=180762aeb713ee352d197de7b69702b6; _tb_token_=cc6e0909d939b; t=25a63fd4cfc7aced14fa7ef63068f156; v=0")
+      .url(url).build();
     return client.newCall(request).execute();
   }
 }

@@ -15,8 +15,8 @@ public class Test {
 
   }
 
-  private static <T> String printfArr(T[] arr){
-    StringBuilder sb= new StringBuilder();
+  private static <T> String printfArr(T[] arr) {
+    StringBuilder sb = new StringBuilder();
     for (T t : arr) {
       sb.append(t).append(' ');
     }
