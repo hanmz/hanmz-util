@@ -112,7 +112,7 @@ public class HttpBuffer {
   }
 
   /**
-   * 获取块内容
+   * 获取块内容，可能需要解压文件
    */
   String getTrunkedString(int length, String contentEncoding) {
 

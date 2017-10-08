@@ -44,7 +44,8 @@ public class HttpBody {
     if (!InnerUtils.isNullOrEmpty(headers.get(TRANSFER_ENCODING)) && "chunked".equalsIgnoreCase(headers.get(TRANSFER_ENCODING).toArray()[0].toString())) {
       String value = header.getValue(Constant.CONTENT_ENCODING);
       if (Strings.isNullOrEmpty(value)) {
-        throw HttpException.asHttpException("Content-Encoding not found");
+        value = IDENTITY.val;
+        log.warn("Content-Encoding not found");
       }
       if (!isSupportEncoding(value)) {
         throw HttpException.asHttpException("Content-Encoding {} is unsupported", value);
@@ -97,7 +98,7 @@ public class HttpBody {
   public enum ContentEncoding {
 
     GZIP("gzip"), COMPRESS("compress"), DEFLATE("deflate"), IDENTITY("identity");
-    public String val;
+    String val;
 
     ContentEncoding(String val) {
       this.val = val;
