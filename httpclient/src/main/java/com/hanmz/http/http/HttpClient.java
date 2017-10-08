@@ -87,14 +87,20 @@ public class HttpClient {
   private Socket getSocket(Proxy proxy, InetSocketAddress address) {
     return map.compute(address.getHostName(), (k, v) -> {
       if (v == null || isClose(v)) {
+        Utils.closeQuietly(v);
         return initSocket(proxy, address);
       }
       return v;
     });
   }
 
+  public void cleanSocket(HttpRequest request) {
+    String host = Utils.getHost(request.getUrl());
+    Utils.closeQuietly(map.remove(host));
+  }
+
   private Socket initSocket(Proxy proxy, InetSocketAddress address) {
-    Socket socket;
+    Socket socket = null;
     try {
       socket = proxy.type() == Proxy.Type.DIRECT || proxy.type() == Proxy.Type.HTTP ? SocketFactory.getDefault().createSocket() : new Socket(proxy);
 
@@ -105,6 +111,7 @@ public class HttpClient {
 
       return socket;
     } catch (Exception e) {
+      Utils.closeQuietly(socket);
       throw HttpException.asHttpException("init socket error", e);
     }
   }
