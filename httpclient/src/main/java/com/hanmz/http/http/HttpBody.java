@@ -1,7 +1,6 @@
 package com.hanmz.http.http;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Multimap;
 import com.hanmz.http.exception.HttpException;
 import com.hanmz.http.util.Constant;
 import com.hanmz.http.util.InnerUtils;
@@ -32,16 +31,16 @@ public class HttpBody {
   }
 
 
-  public String getBody(Multimap<String, String> headers) {
+  public String getStringBody() {
     // 固定长度 response body
-    if (!InnerUtils.isNullOrEmpty(headers.get(CONTENT_LENGTH))) {
-      log.info("content-length : {}", headers.get(CONTENT_LENGTH).toArray()[0].toString());
-      int length = NumberUtils.toInt(headers.get(CONTENT_LENGTH).toArray()[0].toString());
+    if (!InnerUtils.isNullOrEmpty(header.getValue(CONTENT_LENGTH))) {
+      log.info("content-length : {}", header.getValue(CONTENT_LENGTH));
+      int length = NumberUtils.toInt(header.getValue(CONTENT_LENGTH));
       return getBody(length);
     }
 
     // 分块传输
-    if (!InnerUtils.isNullOrEmpty(headers.get(TRANSFER_ENCODING)) && "chunked".equalsIgnoreCase(headers.get(TRANSFER_ENCODING).toArray()[0].toString())) {
+    if (!InnerUtils.isNullOrEmpty(header.getValue(TRANSFER_ENCODING)) && "chunked".equalsIgnoreCase(header.getValue(TRANSFER_ENCODING))) {
       String value = header.getValue(Constant.CONTENT_ENCODING);
       if (Strings.isNullOrEmpty(value)) {
         value = IDENTITY.val;

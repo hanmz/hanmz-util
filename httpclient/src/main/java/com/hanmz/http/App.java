@@ -8,6 +8,7 @@ import com.hanmz.http.http.HttpClient;
 import com.hanmz.http.http.HttpHeader;
 import com.hanmz.http.http.HttpRequest;
 import com.hanmz.http.http.HttpResponse;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.TimeUnit;
 
@@ -18,6 +19,7 @@ import static java.lang.System.out;
  * *
  * Created by hanmz on 2017/10/7.
  */
+@Slf4j
 public class App {
   public static void main(String[] args) {
     HttpClient httpClient = new HttpClient();
@@ -50,12 +52,12 @@ public class App {
     response.setStatusLine(statusLine);
     out.println(statusLine);
 
-    Multimap<String, String> headers = header.getHeaders();
+    Multimap<String, String> headers = header.getHeader();
     response.setHeaders(headers);
     out.println(printfMap(headers));
 
-    HttpBody body = new HttpBody(buffer);
-    String bodyString = body.getBody(headers);
+    HttpBody body = new HttpBody(buffer, header);
+    String bodyString = body.getStringBody();
     response.setBodyString(bodyString);
     out.println(bodyString);
   }

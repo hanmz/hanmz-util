@@ -16,7 +16,7 @@ import java.util.Collection;
 @Slf4j
 public class HttpHeader {
 
-  private Multimap<String, String> headers;
+  private Multimap<String, String> header;
 
   private HttpBuffer buffer;
 
@@ -31,19 +31,24 @@ public class HttpHeader {
     return getString(buffer.getPos((byte) '\n'));
   }
 
+  public Multimap<String, String> getHeader() {
+    if (header == null) {
+      header = getHeaders();
+    }
+    return header;
+  }
+
   /**
    * 获取请求头
    * 为什么用Multimap，因为可能存在单key多value的header，例如Set-Cookie
    */
-  public Multimap<String, String> getHeaders() {
+  private Multimap<String, String> getHeaders() {
     Multimap<String, String> headers = ArrayListMultimap.create();
     String line;
     while ((line = getString(buffer.getPos((byte) '\n'))).length() != 0) {
       int i = line.indexOf(':');
       headers.put(line.substring(0, i).trim(), line.substring(i + 1).trim());
     }
-
-    this.headers = headers;
     return headers;
   }
 
@@ -59,7 +64,7 @@ public class HttpHeader {
   }
 
   public String getValue(String name) {
-    Collection<String> values = headers.get(name);
+    Collection<String> values = header.get(name);
     return InnerUtils.isNullOrEmpty(values) ? null : values.toArray()[0].toString();
   }
 
