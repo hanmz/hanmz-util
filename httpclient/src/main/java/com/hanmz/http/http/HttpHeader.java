@@ -1,10 +1,13 @@
 package com.hanmz.http.http;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.hanmz.http.util.InnerUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.charset.Charset;
+import java.util.Collection;
 
 /**
  * *
@@ -12,6 +15,8 @@ import java.nio.charset.Charset;
  */
 @Slf4j
 public class HttpHeader {
+
+  private Multimap<String, String> headers;
 
   private HttpBuffer buffer;
 
@@ -37,6 +42,8 @@ public class HttpHeader {
       int i = line.indexOf(':');
       headers.put(line.substring(0, i).trim(), line.substring(i + 1).trim());
     }
+
+    this.headers = headers;
     return headers;
   }
 
@@ -44,6 +51,16 @@ public class HttpHeader {
     String result = new String(buffer.buffer, buffer.pos, i - buffer.pos, Charset.forName("UTF-8")).trim();
     buffer.pos = i + 1;
     return result;
+  }
+
+  public String getValue(String name, String defaultValue) {
+    String value = getValue(name);
+    return Strings.isNullOrEmpty(value) ? defaultValue : value;
+  }
+
+  public String getValue(String name) {
+    Collection<String> values = headers.get(name);
+    return InnerUtils.isNullOrEmpty(values) ? null : values.toArray()[0].toString();
   }
 
 

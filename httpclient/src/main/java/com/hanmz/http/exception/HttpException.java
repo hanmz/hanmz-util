@@ -1,7 +1,8 @@
 package com.hanmz.http.exception;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import com.hanmz.http.util.FormatStringUtils;
+
+import static com.hanmz.http.util.FormatStringUtils.formatString;
 
 /**
  * *
@@ -14,7 +15,7 @@ public class HttpException extends RuntimeException {
   }
 
   private HttpException(String errorMessage, Throwable cause) {
-    super(getMessage(errorMessage) + " - " + getMessage(cause), cause);
+    super(FormatStringUtils.getMessage(errorMessage) + " - " + FormatStringUtils.getMessage(cause), cause);
   }
 
   public static HttpException asHttpException(String errorMessage) {
@@ -28,25 +29,15 @@ public class HttpException extends RuntimeException {
     return new HttpException(message, cause);
   }
 
+  public static HttpException asHttpException(String message, Object... objects) {
+    return new HttpException(formatString(message, objects));
+  }
+
 
   public static HttpException asHttpException(Throwable cause) {
     if (cause instanceof HttpException) {
       return (HttpException) cause;
     }
-    return new HttpException(getMessage(cause), cause);
-  }
-
-  private static String getMessage(Object obj) {
-    if (obj == null) {
-      return "";
-    }
-
-    if (obj instanceof Throwable) {
-      StringWriter str = new StringWriter();
-      PrintWriter pw = new PrintWriter(str);
-      ((Throwable) obj).printStackTrace(pw);
-      return str.toString();
-    }
-    return obj.toString();
+    return new HttpException(FormatStringUtils.getMessage(cause), cause);
   }
 }

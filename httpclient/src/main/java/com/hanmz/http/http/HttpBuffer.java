@@ -1,11 +1,14 @@
 package com.hanmz.http.http;
 
-import com.hanmz.http.util.GzipUtils;
+import com.hanmz.http.util.UncompressUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import static com.hanmz.http.http.HttpBody.ContentEncoding.COMPRESS;
+import static com.hanmz.http.http.HttpBody.ContentEncoding.DEFLATE;
+import static com.hanmz.http.http.HttpBody.ContentEncoding.GZIP;
 import static com.hanmz.http.util.Utils.UTF_8;
 
 /**
@@ -111,11 +114,20 @@ public class HttpBuffer {
   /**
    * 获取块内容
    */
-  String getTrunkedString(int length) {
-    String res = new String(GzipUtils.uncompress(buffer, pos, length), UTF_8);
-    // 加2是因为后面还有\n\r
+  String getTrunkedString(int length, String contentEncoding) {
+
+    String res;
+    if (GZIP.val.equalsIgnoreCase(contentEncoding)) {
+      res = new String(UncompressUtils.gzip(buffer, pos, length), UTF_8);
+    } else if (COMPRESS.val.equalsIgnoreCase(contentEncoding)) {
+      res = new String(UncompressUtils.gzip(buffer, pos, length), UTF_8);
+    } else if (DEFLATE.val.equalsIgnoreCase(contentEncoding)) {
+      res = new String(UncompressUtils.deflate(buffer, pos, length), UTF_8);
+    } else {
+      res = new String(buffer, pos, length, UTF_8);
+    }
+    // 加2是因为后面还有\r\n
     pos += (length + 2);
-    //    pos += length;
     return res;
 
   }
