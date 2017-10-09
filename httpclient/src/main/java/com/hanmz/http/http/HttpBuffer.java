@@ -116,11 +116,11 @@ public class HttpBuffer {
    */
   String getTrunkedString(int length, String contentEncoding) {
 
-    String res;
+    String res = null;
     if (GZIP.val.equalsIgnoreCase(contentEncoding)) {
       res = new String(UncompressUtils.gzip(buffer, pos, length), UTF_8);
     } else if (COMPRESS.val.equalsIgnoreCase(contentEncoding)) {
-      res = new String(UncompressUtils.gzip(buffer, pos, length), UTF_8);
+      // TODO: hanmz 2017/10/9
     } else if (DEFLATE.val.equalsIgnoreCase(contentEncoding)) {
       res = new String(UncompressUtils.deflate(buffer, pos, length), UTF_8);
     } else {

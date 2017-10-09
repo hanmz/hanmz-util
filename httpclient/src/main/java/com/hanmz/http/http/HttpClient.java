@@ -3,11 +3,15 @@ package com.hanmz.http.http;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.hanmz.http.exception.HttpException;
+import com.hanmz.http.interceptor.HInterceptor;
+import com.hanmz.http.interceptor.HRealChain;
+import com.hanmz.http.interceptor.RetryInterceptor;
 import com.hanmz.http.util.InnerUtils;
 import com.hanmz.http.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.net.SocketFactory;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.InetAddress;
@@ -28,11 +32,32 @@ import java.util.Map;
 @Slf4j
 public class HttpClient {
   private Map<String, Socket> map = Maps.newConcurrentMap();
+  private List<HInterceptor> interceptors = Lists.newArrayList();
 
-  public void get(HttpRequest request, HttpBuffer buffer) {
+  public void addInterceptor(HInterceptor interceptor) {
+    interceptors.add(interceptor);
+  }
+
+  /**
+   * 增加interceptor chain
+   */
+  public void call(HRequest request) {
+    request.setClient(this);
+    List<HInterceptor> interceptorList = Lists.newArrayList();
+    interceptorList.add(new RetryInterceptor());
+    interceptorList.addAll(interceptors);
+    HInterceptor.HChain chain = new HRealChain(request, interceptorList);
     try {
-      buffer.init();
-      initGet(request.getUrl(), request.getHeaders(), buffer);
+      chain.proceed(request);
+    } catch (IOException e) {
+      throw HttpException.asHttpException(e);
+    }
+  }
+
+  public void get(HRequest request) {
+    try {
+      request.getBuffer().init();
+      initGet(request.getUrl(), request.getHeaders(), request.getBuffer());
     } catch (Exception e) {
       throw HttpException.asHttpException(e);
     }
@@ -94,7 +119,7 @@ public class HttpClient {
     });
   }
 
-  public void cleanSocket(HttpRequest request) {
+  public void cleanSocket(HRequest request) {
     String host = Utils.getHost(request.getUrl());
     Utils.closeQuietly(map.remove(host));
   }

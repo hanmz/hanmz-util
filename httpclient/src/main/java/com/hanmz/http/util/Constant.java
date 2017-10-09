@@ -9,5 +9,6 @@ public class Constant {
   public static final String CONTENT_LENGTH = "Content-Length";
   public static final String TRANSFER_ENCODING = "Transfer-Encoding";
 
-  private Constant(){}
+  private Constant() {
+  }
 }

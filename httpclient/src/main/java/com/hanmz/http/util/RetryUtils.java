@@ -29,10 +29,7 @@ public final class RetryUtils {
    * @param <T>                    返回值类型
    * @return 经过重试的callable的执行结果
    */
-  public static <T> T executeWithRetry(Callable<T> callable,
-                                       int retryTimes,
-                                       long sleepTimeInMilliSecond,
-                                       boolean exponential) throws Exception {
+  public static <T> T executeWithRetry(Callable<T> callable, int retryTimes, long sleepTimeInMilliSecond, boolean exponential) throws Exception {
     Retry retry = new Retry();
     return retry.doRetry(callable, retryTimes, sleepTimeInMilliSecond, exponential, null);
   }

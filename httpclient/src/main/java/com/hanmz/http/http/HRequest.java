@@ -10,13 +10,24 @@ import java.util.Map;
  * Created by hanmz on 2017/10/8.
  */
 @Data
-public class HttpRequest {
+public class HRequest {
   private String url;
   private Map<String, String> headers;
+  private HttpBuffer buffer;
+  private HttpClient client;
 
   public static Builder builder() {
     return new Builder();
   }
+
+  public HttpClient getClient() {
+    return client;
+  }
+
+  public void setClient(HttpClient client) {
+    this.client = client;
+  }
+
 
   public static class Builder {
     private String url;
@@ -32,10 +43,11 @@ public class HttpRequest {
       return this;
     }
 
-    public HttpRequest build() {
-      HttpRequest request = new HttpRequest();
+    public HRequest build() {
+      HRequest request = new HRequest();
       request.url = url;
       request.headers = headers;
+      request.buffer = new HttpBuffer();
       return request;
     }
   }
