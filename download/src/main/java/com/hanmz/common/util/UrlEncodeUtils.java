@@ -1,4 +1,4 @@
-package com.hanmz.download.util;
+package com.hanmz.common.util;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;

@@ -1,4 +1,4 @@
-package com.hanmz.download.util;
+package com.hanmz.common.util;
 
 import junit.framework.TestCase;
 

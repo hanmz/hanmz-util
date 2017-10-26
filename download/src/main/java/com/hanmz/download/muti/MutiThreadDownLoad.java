@@ -12,8 +12,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static com.hanmz.download.util.InnerUtils.fileSize;
-import static com.hanmz.download.util.UrlEncodeUtils.getFileName;
+import static com.hanmz.common.util.InnerUtils.fileSize;
+import static com.hanmz.common.util.UrlEncodeUtils.getFileName;
 
 /**
  * *
